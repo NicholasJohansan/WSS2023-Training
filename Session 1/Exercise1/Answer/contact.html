@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blackgoose Contact</title>
+</head>
+<body>
+  <h1>The Black Goose Blog</h1>
+
+  <ul>
+    <li>
+      <a href="home.html">Home</a>
+    </li>
+    <li>
+      <a href="menu.html">Menu</a>
+    </li>
+    <li>
+      <a href="blog.html">Blog</a>
+    </li>
+    <li>
+      <a href="contact.html">Contact</a>
+    </li>
+  </ul>
+
+  <h2>Contact Us - Reservation</h2>
+  <form>
+    <table>
+      <tbody>
+        <tr>
+          <td>
+            <label for="first_name">First Name:</label>
+          </td>
+          <td>
+            <input type="text" name="first_name" id="first_name">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="last_name">Last Name:</label>
+          </td>
+          <td>
+            <input type="text" name="last_name" id="last_name">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="email">Email:</label>
+          </td>
+          <td>
+            <input type="email" name="email" id="email">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="date">Date:</label>
+          </td>
+          <td>
+            <input type="date" name="date" id="date" min="2019-09-01" max="2019-10-01">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="time">Time:</label>
+          </td>
+          <td>
+            <input type="time" name="time" id="time">
+          </td>
+        </tr>
+        <tr>
+          <td>No. of People:</td>
+          <td>
+            <span>
+              <input type="radio" name="people" id="1_people">
+              <label for="1_people">1</label>
+            </span>
+            <span>
+              <input type="radio" name="people" id="2_people">
+              <label for="2_people">2</label>
+            </span>
+            <span>
+              <input type="radio" name="people" id="3_people">
+              <label for="3_people">3</label>
+            </span>
+            <span>
+              <input type="radio" name="people" id="4_people">
+              <label for="4_people">4</label>
+            </span>
+            <span>
+              <input type="radio" name="people" id="5_people">
+              <label for="5_people">5</label>
+            </span>
+            <span>
+              <input type="radio" name="people" id="6_people">
+              <label for="6_people">6</label>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="purpose">Purpose of Reservation:</label>
+          </td>
+          <td>
+            <select name="purpose" id="purpose">
+              <option value="None">None</option>
+              <option value="Anniversary">Anniversary</option>
+              <option value="Birthday">Birthday</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="special_instructions">Special Instructions:</label>
+          </td>
+          <td>
+            <textarea name="special_instructions" id="special_instructions" cols="18" rows="2"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <button type="submit">Send</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</body>
+</html>
