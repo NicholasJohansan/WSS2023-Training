@@ -5,6 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Web Form</title>
+  <script type="text/javascript">
+    function myFunction() {
+      alert("Hello World");
+    }
+  </script>
 </head>
 <body>
   <h1>Patient Web Form</h1>
@@ -63,7 +68,7 @@
             <label for="study_id">Experimental Study</label>
           </th>
           <td>
-            <select name="study_id" id="study_id">
+            <select name="study_id" id="study_id" onchange="myFunction();">
               <option value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
