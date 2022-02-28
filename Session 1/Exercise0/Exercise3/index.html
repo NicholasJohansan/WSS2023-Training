@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Web Form</title>
+</head>
+<body>
+  <h1>Patient Web Form</h1>
+  <form method="post" action="https://dataman.bioinformatics.ic.ac.uk/computer_skills/quizzer/subject.html">
+    <table>
+      <tbody>
+        <tr>
+          <th>
+            <label for="first_name">First Name</label>
+          </th>
+          <td>
+            <input type="text" name="first_name" id="first_name">
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <label for="last_name">Last Name</label>
+          </th>
+          <td>
+            <input type="text" name="last_name" id="last_name">
+          </td>
+        </tr>
+        <tr>
+          <th>
+            Gender
+          </th>
+          <td>
+            <div>
+              <input type="radio" name="gender" id="gender_male" value="1">
+              <label for="gender_male">Male</label>
+            </div>
+            <div>
+              <input type="radio" name="gender" id="gender_female" value="0">
+              <label for="gender_female">Female</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <label for="smoker">Smoker</label>
+          </th>
+          <td>
+            <input type="checkbox" name="smoker" id="smoker" value="1">
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <label for="drinker">Drinker</label>
+          </th>
+          <td>
+            <input type="checkbox" name="drinker" id="drinker" value="1">
+          </td>
+        </tr>
+        <tr>
+          <th>
+            <label for="study_id">Experimental Study</label>
+          </th>
+          <td>
+            <select name="study_id" id="study_id">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <button type="submit">Submit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+</body>
+</html>
