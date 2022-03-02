@@ -21,16 +21,15 @@ const appStorage = (function() {
       }
       boardState.currentPlayer = gameController.defaultPlayer;
     }
-    return boardState
+    return boardState;
   };
 
   const saveBoardState = function() {
-    console.log('saving')
     let boardState = {
       currentPlayer: gameController.getCurrentPlayer(),
       board: gameController.getBoard()
     };
-    localStorage.setItem(BOARD_STATE_KEY, JSON.stringify(boardState))
+    localStorage.setItem(BOARD_STATE_KEY, JSON.stringify(boardState));
   };
 
   // Init game
@@ -109,7 +108,7 @@ const gameController = (function() {
 
   const gameUpdate = function() {
     gameBoard.update();
-    appStorage.saveBoardState()
+    appStorage.saveBoardState();
   };
 
   const gameReset = function() {
