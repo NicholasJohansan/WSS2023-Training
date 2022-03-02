@@ -1,6 +1,39 @@
+const player = function(sign) {
+  return {
+    sign
+  };
+};
+
+const gameController = (function() {
+  let playerX = player('X');
+  let playerO = player('O');
+  let currentPlayer = playerX; // X goes first
+
+  const switchPlayer = function() {
+    currentPlayer = currentPlayer === playerX ?
+    playerO :
+    playerX ;
+  }
+
+  const getCurrentPlayer = () => currentPlayer;
+
+  return {
+    getCurrentPlayer,
+    switchPlayer
+  };
+})();
+
 const gameBoard = (function() {
   let boardElement = $('#board');
   let board = [];
+
+  const tileClicked = function() {
+    $(this).text(gameController.getCurrentPlayer().sign);
+    gameController.switchPlayer();
+    $('#turn-display').hide(0, function() {
+      $(this).text(`${gameController.getCurrentPlayer().sign}\'s turn`).show();
+    });
+  };
   
   // Populate board
   (() => {
@@ -13,7 +46,7 @@ const gameBoard = (function() {
           'data-col': col,
           'class': 'tile',
           'role': 'button'
-        }).appendTo('#board');
+        }).appendTo('#board').click(tileClicked);
       }
     }
   })();
