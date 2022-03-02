@@ -1,0 +1,114 @@
+html, body {
+  height: 100%;
+}
+
+/* Typography Styles */
+h1 {
+  font-size: 2.4rem;
+}
+
+.display-4 {
+  font-size: 2.6rem;
+}
+
+.btn {
+  font-size: 1rem;
+}
+/* End */
+
+body > div {
+  height: 100%;
+  gap: 1.6rem;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: start;
+  display: grid;
+  grid-template-rows: repeat(3, min-content);
+  grid-template-areas:
+  "header"
+  "board"
+  "actions";
+}
+
+header {
+  padding: 1rem;
+  justify-self: stretch;
+  text-align: center;
+  grid-area: header;
+}
+
+#board {
+  grid-area: board;
+  height: min-content;
+  width: min-content;
+  display: grid;
+  gap: .3rem;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  background-color: black;
+}
+
+.tile {
+  width: 4rem;
+  height: 4rem;
+  background-color: #fff;
+}
+
+#actions {
+  grid-area: actions;
+  justify-content: end;
+  width: max-content;
+}
+
+.btn + .btn {
+  margin-left: .4rem;
+}
+
+@media screen and (orientation: landscape) {
+  body > div {
+    justify-items: center;
+    grid-template-columns: repeat(2, min-content);
+    grid-template-rows: repeat(2, min-content);
+    grid-template-areas:
+    "header header"
+    "actions board";
+  }
+
+  #board {
+    align-self: center;
+  }
+}
+
+@media screen and (min-width: 426px) {
+  .tile {
+    width: 5rem;
+    height: 5rem;
+  }
+  
+}
+
+@media screen and (min-width: 769px) {
+  .tile {
+    width: 7rem;
+    height: 7rem;
+  }
+  
+}
+
+@media screen and (max-height: 400px) {
+  .tile {
+    width: 3rem;
+    height: 3rem;
+  }
+  .btn {
+    display: block;
+  }
+  .btn + .btn {
+    margin-left: 0;
+    margin-top: .4rem;
+  }
+}
