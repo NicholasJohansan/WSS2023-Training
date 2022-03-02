@@ -31,6 +31,15 @@ const gameBoard = (function () {
   let boardElement = $('#board');
   let board;
 
+  const resetBoard = function() {
+    boardElement.children('.tile').toArray().forEach( tile => {
+      $(tile).children('p').text('');
+    })
+    board = board.map(row => row.map(tile => null));
+    gameController.setCurrentPlayer(gameController.defaultPlayer);
+    appStorage.saveBoardState();
+  }
+
   const updateTurnDisplay = function() {
     $('#turn-display').hide(0, function () {
       $(this).text(`${gameController.getCurrentPlayer().sign}\'s turn`).show();
@@ -74,9 +83,12 @@ const gameBoard = (function () {
   const init = () => {
     populateBoard();
     updateTurnDisplay();
+    $('#reset-button').click(resetBoard);
   };
+
   const getBoard = () => board;
   const setBoard = newBoard => board = newBoard;
+  
   return {
     init,
     getBoard,
