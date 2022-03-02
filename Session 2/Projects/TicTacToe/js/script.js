@@ -28,7 +28,9 @@ const gameBoard = (function() {
   let board = [];
 
   const tileClicked = function() {
-    $(this).text(gameController.getCurrentPlayer().sign);
+    $(this).children('p').fadeOut(0, function() {
+      $(this).text(gameController.getCurrentPlayer().sign).fadeIn(200);
+    });
     gameController.switchPlayer();
     $('#turn-display').hide(0, function() {
       $(this).text(`${gameController.getCurrentPlayer().sign}\'s turn`).show();
@@ -46,7 +48,9 @@ const gameBoard = (function() {
           'data-col': col,
           'class': 'tile',
           'role': 'button'
-        }).appendTo('#board').click(tileClicked);
+        }).append($('<p>'))
+          .appendTo('#board')
+          .click(tileClicked);
       }
     }
   })();

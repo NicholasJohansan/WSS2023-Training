@@ -56,6 +56,14 @@ header {
   width: 4rem;
   height: 4rem;
   background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile > p {
+  font-size: 3rem;
+  margin-bottom: 0;
 }
 
 #actions {
@@ -88,7 +96,9 @@ header {
     width: 5rem;
     height: 5rem;
   }
-  
+  .tile > p {
+    font-size: 4rem;
+  }
 }
 
 @media screen and (min-width: 769px) {
@@ -96,7 +106,9 @@ header {
     width: 7rem;
     height: 7rem;
   }
-  
+  .tile > p {
+    font-size: 5rem;
+  }
 }
 
 @media screen and (max-height: 400px) {
@@ -110,5 +122,8 @@ header {
   .btn + .btn {
     margin-left: 0;
     margin-top: .4rem;
+  }
+  .tile > p {
+    font-size: 2rem;
   }
 }
