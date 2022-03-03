@@ -28,6 +28,10 @@ html, body {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
 }
 
 #history > header {
@@ -35,6 +39,7 @@ html, body {
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  margin-bottom: .5rem;
 }
 
 #history .btn {
@@ -43,6 +48,23 @@ html, body {
 
 #history h4 {
   display: inline-block;
+}
+
+.history-card > p {
+  font-size: 2rem;
+}
+
+.history-card {
+  text-align: center;
+}
+
+.history-card > .board {
+  border: .3rem solid black;
+}
+
+.history-card + .history-card {
+  padding-top: 3rem;
+  border-top: .3rem solid black;
 }
 /* End */
 
