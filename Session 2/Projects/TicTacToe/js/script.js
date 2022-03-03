@@ -14,11 +14,15 @@ const appStorage = (function() {
     return history;
   };
 
+  const clearHistory = function() {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify([]));
+  };
+
   const addToHistory = function(boardState) {
     let history = getHistory();
     history.push(boardState);
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-  }
+  };
 
   const getBoardState = function() {
     let boardState = localStorage.getItem(BOARD_STATE_KEY) || '{}';
@@ -53,13 +57,16 @@ const appStorage = (function() {
   return {
     getBoardState,
     saveBoardState,
-    addToHistory
+    addToHistory,
+    getHistory,
+    clearHistory
   };
 })();
 
 const historyView = (function() {
   let historyOverlay = $('#history-overlay');
   let historyButton = $('#history-button');
+  let clearHistoryButton = $('#clear-history-button');
   
   const init = function() {
     historyOverlay.hide();
@@ -70,6 +77,9 @@ const historyView = (function() {
       if (e.target == historyOverlay.get(0)) {
         historyOverlay.fadeOut(400);
       }
+    });
+    clearHistoryButton.click(function() {
+      appStorage.clearHistory();
     });
   };
   
