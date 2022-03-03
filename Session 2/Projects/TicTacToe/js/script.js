@@ -153,7 +153,7 @@ const historyView = (function() {
       appStorage.clearHistory();
       historyList.fadeOut(400, function() {
         displayHistory();
-        historyList.show();
+        historyList.show(400);
       });
     });
   };
