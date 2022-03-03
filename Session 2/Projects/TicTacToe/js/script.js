@@ -44,6 +44,10 @@ const gameBoard = (function() {
   let board = $('#board');
   let turnDisplay = $('#turn-display');
 
+  const tie = function() {
+    updateTurnDisplay('It\'s a tie!')
+  }
+
   const update = function(currentPlayer) {
     updateTurnDisplay(`${currentPlayer.sign}\'s turn`);
   };
@@ -106,7 +110,8 @@ const gameBoard = (function() {
     update,
     populate,
     setTileSign,
-    highlightWin
+    highlightWin,
+    tie
   };
 })();
 
@@ -134,6 +139,10 @@ const gameController = (function() {
     gameBoard.reset();
     gameUpdate();
   };
+
+  const isTie = function() {
+    return board.every(row => row.every(tile => tile !== null));
+  }
 
   const isWinning = function(signs) {
     return signs.length === 3 && signs[0].sign === signs[1].sign && signs[1].sign === signs[2].sign;
@@ -196,6 +205,20 @@ const gameController = (function() {
     return null;
   };
 
+  const processBoard = function() {
+    let winningSigns = getWinningSigns();
+    if (!winningSigns) {
+      if (isTie()) {
+        gameBoard.tie();
+      } else {
+        switchPlayer();
+        gameUpdate();
+      }
+    } else {
+      gameBoard.highlightWin(winningSigns);
+    };
+  }
+
   const tileClicked = function() {
     let sign = currentPlayer.sign;
     let row = $(this).attr('data-row');
@@ -209,13 +232,7 @@ const gameController = (function() {
     board[row][col] = sign;
     gameBoard.setTileSign(this, sign);
 
-    let winningSigns = getWinningSigns();
-    if (!winningSigns) {
-      switchPlayer();
-      gameUpdate();
-    } else {
-      gameBoard.highlightWin(winningSigns);
-    };
+    processBoard();
   };
 
   const init = function() {
