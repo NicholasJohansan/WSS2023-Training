@@ -12,16 +12,25 @@
   <script src="js/script.js" defer></script>
 </head>
 <body class="container-fluid p-2">
-  <div>
+  <div id="main">
     <header>
       <h1 class="mb-1">Tic Tac Toe</h1>
       <p class="mb-0 display-4" id="turn-display">X's turn</p>
     </header>
-    <div id="board" class="rounded-lg">
+    <div id="board" class="rounded-lg board">
     </div>
     <div id="actions">
       <button id="reset-button" class="btn btn-danger">Restart</button>
-      <button class="btn btn-primary">History</button>
+      <button id="history-button" class="btn btn-primary">History</button>
+    </div>
+  </div>
+  <div id="history-overlay">
+    <div id="history" class="rounded-lg p-3">
+      <header>
+        <h4>History</h4>
+        <button id="clear-history-button" class="btn btn-danger">Clear</button>
+      </header>
+      <div class="rounded-lg"></div>
     </div>
   </div>
 </body>

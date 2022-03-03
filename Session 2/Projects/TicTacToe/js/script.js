@@ -43,6 +43,27 @@ const appStorage = (function() {
   };
 })();
 
+const historyView = (function() {
+  let historyOverlay = $('#history-overlay');
+  let historyButton = $('#history-button');
+  
+  const init = function() {
+    historyOverlay.hide();
+    historyButton.click(function() {
+      historyOverlay.fadeIn(400);
+    });
+    historyOverlay.click(function(e) {
+      if (e.target == historyOverlay.get(0)) {
+        historyOverlay.fadeOut(400);
+      }
+    });
+  };
+  
+  return {
+    init
+  }
+})();
+
 const gameBoard = (function() {
   let board = $('#board');
   let turnDisplay = $('#turn-display');
@@ -286,5 +307,6 @@ const gameController = (function() {
 })();
 
 (function() {
+  historyView.init();
   gameController.start();
 })();

@@ -2,7 +2,55 @@ html, body {
   height: 100%;
 }
 
+/* History Styles */
+#history-overlay {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, .1);
+}
+
+#history {
+  background-color: white;
+  box-shadow: 1px 1px 5px 5px rgba(0, 0, 0, .1);
+  width: 40vw;
+  height: 40vw;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  justify-content: stretch;
+  justify-items: center;
+}
+
+#history > div {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+
+#history > header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#history .btn {
+  display: inline-block;
+}
+
+#history h4 {
+  display: inline-block;
+}
+/* End */
+
 /* Typography Styles */
+h4 {
+  font-size: 2.2rem;
+}
+
 h1 {
   font-size: 2.4rem;
 }
@@ -31,14 +79,14 @@ body > div {
   "actions";
 }
 
-header {
+#main > header {
   padding: 1rem;
   justify-self: stretch;
   text-align: center;
   grid-area: header;
 }
 
-#board {
+.board {
   grid-area: board;
   height: min-content;
   width: min-content;
@@ -86,7 +134,7 @@ header {
     "actions board";
   }
 
-  #board {
+  .board {
     align-self: center;
   }
 }
@@ -111,6 +159,20 @@ header {
   }
 }
 
+@media screen and (max-width: 768px) {
+  #history {
+    width: 50vw;
+    height: 50vw;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  #history {
+    height: 90vw;
+    width: 90vw;
+  }
+}
+
 @media screen and (max-height: 400px) {
   .tile {
     width: 3rem;
@@ -125,5 +187,14 @@ header {
   }
   .tile > p {
     font-size: 2rem;
+  }
+
+  h4 {
+    font-size: 1.8rem;
+  }
+
+  #history {
+    width: 70vh;
+    height: 70vh;
   }
 }
