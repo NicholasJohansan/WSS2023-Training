@@ -52,6 +52,7 @@ const gameBoard = (function() {
     board.children('.tile').toArray().forEach( tile => {
       $(tile).children('p').text('');
       $(tile).animate({opacity: 1}, 400);
+      $(tile).attr('role', 'button');
     });
   };
 
@@ -65,20 +66,25 @@ const gameBoard = (function() {
     $(tile).children('p').fadeOut(0, function() {
       $(this).text(sign).fadeIn(200);
     });
+    $(tile).removeAttr('role'); // To remove the click pointer
   };
 
   const populate = function(board) {
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 3; col++) {
-        let options = board[row][col] ?
-          { 'text': board[row][col] } :
-          {};
-        $('<div>', {
+        let tileValue = {}
+        let divAttrs = {
           'data-row': row,
           'data-col': col,
-          'class': 'tile',
-          'role': 'button'
-        }).append($('<p>', options))
+          'class': 'tile'
+        };
+        if (board[row][col]) {
+          tileValue.text = board[row][col];
+        } else {
+          divAttrs.role = 'button';
+        }
+        $('<div>', divAttrs)
+          .append($('<p>', tileValue))
           .appendTo('#board')
           .click(gameController.tileClicked);
       }
@@ -194,6 +200,11 @@ const gameController = (function() {
     let sign = currentPlayer.sign;
     let row = $(this).attr('data-row');
     let col = $(this).attr('data-col');
+    let tileValue = $(this).children('p').text()
+
+    if (tileValue !== '') {
+      return
+    } // Tile has been clicked on before
 
     board[row][col] = sign;
     gameBoard.setTileSign(this, sign);
