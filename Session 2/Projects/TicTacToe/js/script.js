@@ -24,10 +24,10 @@ const appStorage = (function() {
     return boardState;
   };
 
-  const saveBoardState = function() {
+  const saveBoardState = function(currentPlayer, board) {
     let boardState = {
-      currentPlayer: gameController.getCurrentPlayer(),
-      board: gameController.getBoard()
+      currentPlayer,
+      board
     };
     localStorage.setItem(BOARD_STATE_KEY, JSON.stringify(boardState));
   };
@@ -41,22 +41,23 @@ const appStorage = (function() {
 })();
 
 const gameBoard = (function() {
-  let boardElement = $('#board');
+  let board = $('#board');
+  let turnDisplay = $('#turn-display');
 
-  const update = function() {
-    updateTurnDisplay();
-  }
+  const update = function(currentPlayer) {
+    updateTurnDisplay(`${currentPlayer.sign}\'s turn`);
+  };
 
   const reset = function() {
-    boardElement.children('.tile').toArray().forEach( tile => {
+    board.children('.tile').toArray().forEach( tile => {
       $(tile).children('p').text('');
-    })
-    update();
-  }
+      $(tile).animate({opacity: 1}, 400);
+    });
+  };
 
-  const updateTurnDisplay = function() {
-    $('#turn-display').hide(0, function() {
-      $(this).text(`${gameController.getCurrentPlayer().sign}\'s turn`).show();
+  const updateTurnDisplay = function(text) {
+    turnDisplay.hide(0, function() {
+      $(this).text(text).show();
     });
   };
 
@@ -66,8 +67,7 @@ const gameBoard = (function() {
     });
   };
 
-  const populate = function() {
-    let board = gameController.getBoard();
+  const populate = function(board) {
     for (let row = 0; row < 3; row++) {
       for (let col = 0; col < 3; col++) {
         let options = board[row][col] ?
@@ -84,12 +84,23 @@ const gameBoard = (function() {
       }
     }
   };
+
+  const highlightWin = function(winningSigns) {
+    for (let winningSign of winningSigns) {
+      let { col, row } = winningSign;
+      board.children(`[data-row=${row}][data-col=${col}]`).animate({
+        opacity: 0.5
+      }, 400);
+    }
+    updateTurnDisplay(`${winningSigns[0].sign} wins!`)
+  };
   
   return {
     reset,
     update,
     populate,
-    setTileSign
+    setTileSign,
+    highlightWin
   };
 })();
 
@@ -104,11 +115,11 @@ const gameController = (function() {
     currentPlayer = JSON.stringify(currentPlayer) === JSON.stringify(playerX) ?
       playerO :
       playerX ;
-  }
+  };
 
   const gameUpdate = function() {
-    gameBoard.update();
-    appStorage.saveBoardState();
+    gameBoard.update(currentPlayer);
+    appStorage.saveBoardState(currentPlayer, board);
   };
 
   const gameReset = function() {
@@ -116,7 +127,68 @@ const gameController = (function() {
     currentPlayer = gameController.defaultPlayer;
     gameBoard.reset();
     gameUpdate();
-  }
+  };
+
+  const isWinning = function(signs) {
+    return signs.length === 3 && signs[0].sign === signs[1].sign && signs[1].sign === signs[2].sign;
+  };
+
+  const getWinningSigns = function() {
+    // Check for 3 same sign in a row
+    outer:
+    for (let row = 0; row < 3; row++) {
+      let signs = [];
+      for (let col = 0; col < 3; col++) {
+        if (!board[row][col]) continue outer;
+        signs.push({
+          sign: board[row][col],
+          row,
+          col
+        });
+      }
+      if (isWinning(signs)) return signs;
+    }
+
+    // Check for 3 same sign in a column
+    outer:
+    for (let col = 0; col < 3; col++) {
+      let signs = [];
+      for (let row = 0; row < 3; row++) {
+        if (!board[row][col]) continue outer;
+        signs.push({
+          sign: board[row][col],
+          row,
+          col
+        });
+      }
+      if (isWinning(signs)) return signs;
+    }
+
+    // Check diagonals
+    let signs = [];
+    for (let i = 0; i < 3; i++) {
+      if (!board[i][i]) continue;
+      signs.push({
+        sign: board[i][i],
+        row: i,
+        col: i
+      });
+    } 
+    if (isWinning(signs)) return signs;
+
+    signs = [];
+    for (let i = 2; i >= 0; i--) {
+      if (!board[i][2-i]) continue;
+      signs.push({
+        sign: board[i][2-i],
+        row: i,
+        col: 2-i
+      });
+    } 
+    if (isWinning(signs)) return signs;
+
+    return null;
+  };
 
   const tileClicked = function() {
     let sign = currentPlayer.sign;
@@ -126,28 +198,28 @@ const gameController = (function() {
     board[row][col] = sign;
     gameBoard.setTileSign(this, sign);
 
-    switchPlayer();
-    gameUpdate();
+    let winningSigns = getWinningSigns();
+    if (!winningSigns) {
+      switchPlayer();
+      gameUpdate();
+    } else {
+      gameBoard.highlightWin(winningSigns);
+    };
   };
 
   const init = function() {
     let boardState = appStorage.getBoardState();
     board = boardState.board;
     currentPlayer = boardState.currentPlayer;
-    gameBoard.populate();
+    gameBoard.populate(board);
     gameUpdate();
     $('#reset-button').click(gameReset);
-  }
-
-  const getBoard = () => board;
-  const getCurrentPlayer = () => currentPlayer;
+  };
 
   return {
     start: init,
     tileClicked,
-    defaultPlayer,
-    getBoard,
-    getCurrentPlayer
+    defaultPlayer
   };
 })();
 
