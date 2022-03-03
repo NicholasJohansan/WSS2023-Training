@@ -78,7 +78,7 @@ const historyView = (function() {
   }]
 
   const clearHistoryList = function() {
-    historyList.html('')
+    historyList.html('');
   };
 
   const makeBoard = function(board) {
@@ -151,6 +151,10 @@ const historyView = (function() {
     });
     clearHistoryButton.click(function() {
       appStorage.clearHistory();
+      historyList.fadeOut(400, function() {
+        displayHistory();
+        historyList.show();
+      });
     });
   };
   
