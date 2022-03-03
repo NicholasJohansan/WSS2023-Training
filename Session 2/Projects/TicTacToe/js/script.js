@@ -6,6 +6,19 @@ const player = function(sign) {
 
 const appStorage = (function() {
   const BOARD_STATE_KEY = "boardState";
+  const HISTORY_KEY = "history";
+
+  const getHistory = function() {
+    let history = localStorage.getItem(HISTORY_KEY) || '[]';
+    history = JSON.parse(history);
+    return history;
+  };
+
+  const addToHistory = function(boardState) {
+    let history = getHistory();
+    history.push(boardState);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  }
 
   const getBoardState = function() {
     let boardState = localStorage.getItem(BOARD_STATE_KEY) || '{}';
@@ -39,7 +52,8 @@ const appStorage = (function() {
 
   return {
     getBoardState,
-    saveBoardState
+    saveBoardState,
+    addToHistory
   };
 })();
 
@@ -279,6 +293,13 @@ const gameController = (function() {
     
     switchPlayer();
     processBoard();
+
+    // Check if game ended after processing new click
+    if (state !== 'ongoing') {
+      appStorage.addToHistory({
+        board, state
+      })
+    }
   };
 
   const setBoardStates = function() {
