@@ -5,7 +5,7 @@ const player = function(sign) {
 };
 
 const appStorage = (function() {
-  BOARD_STATE_KEY = "boardState";
+  const BOARD_STATE_KEY = "boardState";
 
   const getBoardState = function() {
     let boardState = localStorage.getItem(BOARD_STATE_KEY) || '{}';
@@ -20,19 +20,22 @@ const appStorage = (function() {
         }
       }
       boardState.currentPlayer = gameController.defaultPlayer;
+      boardState.state = 'ongoing'; // Game is ongoing by default
+    } else {
+      // Ensure that boardState has all the new properties added
+      if (!boardState.state) boardState.state = 'ongoing';
     }
     return boardState;
   };
 
-  const saveBoardState = function(currentPlayer, board) {
+  const saveBoardState = function(currentPlayer, board, state) {
     let boardState = {
       currentPlayer,
-      board
+      board,
+      state
     };
     localStorage.setItem(BOARD_STATE_KEY, JSON.stringify(boardState));
   };
-
-  // Init game
 
   return {
     getBoardState,
@@ -43,22 +46,6 @@ const appStorage = (function() {
 const gameBoard = (function() {
   let board = $('#board');
   let turnDisplay = $('#turn-display');
-
-  const tie = function() {
-    updateTurnDisplay('It\'s a tie!')
-  }
-
-  const update = function(currentPlayer) {
-    updateTurnDisplay(`${currentPlayer.sign}\'s turn`);
-  };
-
-  const reset = function() {
-    board.children('.tile').toArray().forEach( tile => {
-      $(tile).children('p').text('');
-      $(tile).animate({opacity: 1}, 400);
-      $(tile).attr('role', 'button');
-    });
-  };
 
   const updateTurnDisplay = function(text) {
     turnDisplay.hide(0, function() {
@@ -95,14 +82,39 @@ const gameBoard = (function() {
     }
   };
 
-  const highlightWin = function(winningSigns) {
+  const removeTileButtonRole = function() {
+    board.children('.tile').toArray().forEach( tile => {
+      $(tile).removeAttr('role', 'button');
+    });
+  };
+
+  const win = function(winningSigns) {
     for (let winningSign of winningSigns) {
       let { col, row } = winningSign;
       board.children(`[data-row=${row}][data-col=${col}]`).animate({
         opacity: 0.5
       }, 400);
     }
-    updateTurnDisplay(`${winningSigns[0].sign} wins!`)
+    updateTurnDisplay(`${winningSigns[0].sign} wins!`);
+    removeTileButtonRole();
+  };
+
+  const tie = function() {
+    updateTurnDisplay('It\'s a tie!');
+    removeTileButtonRole();
+  }
+
+  const update = function(currentPlayer) {
+    updateTurnDisplay(`${currentPlayer.sign}\'s turn`);
+  };
+
+  const reset = function(currentPlayer) {
+    board.children('.tile').toArray().forEach( tile => {
+      $(tile).children('p').text('');
+      $(tile).animate({opacity: 1}, 400);
+      $(tile).attr('role', 'button');
+    });
+    update(currentPlayer);
   };
   
   return {
@@ -110,8 +122,9 @@ const gameBoard = (function() {
     update,
     populate,
     setTileSign,
-    highlightWin,
-    tie
+    win,
+    tie,
+    removeTileButtonRole
   };
 })();
 
@@ -119,6 +132,7 @@ const gameController = (function() {
   let playerX = player('X');
   let playerO = player('O');
   const defaultPlayer = playerX; // X starts first by default
+  let state;
   let currentPlayer;
   let board;
 
@@ -128,16 +142,12 @@ const gameController = (function() {
       playerX ;
   };
 
-  const gameUpdate = function() {
-    gameBoard.update(currentPlayer);
-    appStorage.saveBoardState(currentPlayer, board);
-  };
-
   const gameReset = function() {
     board = board.map(row => row.map(() => null));
     currentPlayer = gameController.defaultPlayer;
-    gameBoard.reset();
-    gameUpdate();
+    gameBoard.reset(defaultPlayer);
+    appStorage.saveBoardState(currentPlayer, board, state);
+    ongoingState();
   };
 
   const isTie = function() {
@@ -205,18 +215,33 @@ const gameController = (function() {
     return null;
   };
 
+  const winState = function(winningSigns) {
+    state = 'end';
+    gameBoard.win(winningSigns);
+  }
+
+  const tieState = function() {
+    state = 'tie';
+    gameBoard.tie();
+  }
+
+  const ongoingState = function() {
+    state = 'ongoing';
+    gameBoard.update(currentPlayer);
+  }
+
   const processBoard = function() {
     let winningSigns = getWinningSigns();
     if (!winningSigns) {
       if (isTie()) {
-        gameBoard.tie();
+        tieState();
       } else {
-        switchPlayer();
-        gameUpdate();
+        ongoingState();
       }
     } else {
-      gameBoard.highlightWin(winningSigns);
-    };
+      winState(winningSigns);
+    }
+    appStorage.saveBoardState(currentPlayer, board, state);
   }
 
   const tileClicked = function() {
@@ -225,22 +250,31 @@ const gameController = (function() {
     let col = $(this).attr('data-col');
     let tileValue = $(this).children('p').text()
 
-    if (tileValue !== '') {
-      return
-    } // Tile has been clicked on before
+    if (tileValue !== '') return; // Tile has been clicked on before
+    if (state !== 'ongoing') return; // Game not ongoing
 
     board[row][col] = sign;
     gameBoard.setTileSign(this, sign);
-
+    
+    switchPlayer();
     processBoard();
   };
 
-  const init = function() {
+  const setBoardStates = function() {
     let boardState = appStorage.getBoardState();
     board = boardState.board;
     currentPlayer = boardState.currentPlayer;
+    state = boardState.state
+  };
+
+  const loadGame = function() {
     gameBoard.populate(board);
-    gameUpdate();
+    processBoard();
+  }
+
+  const init = function() {
+    setBoardStates();
+    loadGame();
     $('#reset-button').click(gameReset);
   };
 
