@@ -67,10 +67,81 @@ const historyView = (function() {
   let historyOverlay = $('#history-overlay');
   let historyButton = $('#history-button');
   let clearHistoryButton = $('#clear-history-button');
+  let historyList = $('#history > div');
+  let history = [{
+    board: [
+      ['X', 'X', 'X'],
+      [null, null, null],
+      [null, null, null]
+    ],
+    state: 'end'
+  }]
+
+  const clearHistoryList = function() {
+    historyList.html('')
+  };
+
+  const makeBoard = function(board) {
+    let boardElement = $('<div>', {
+      'class': 'board rounded-lg'
+    });
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 3; col++) {
+        let tile = $('<div>', {
+          'class': 'tile',
+          'data-row': row,
+          'data-col': col
+        }).append($('<p>', {
+          'text': board[row][col] || ''
+        }));
+        boardElement.append(tile);
+      }
+    }
+    return boardElement;
+  };
+
+  const highlightWin = function(boardElement, winningSigns) {
+    for (let winningSign of winningSigns) {
+      let { col, row } = winningSign;
+      boardElement.children(`[data-row=${row}][data-col=${col}]`).animate({
+        opacity: 0.5
+      }, 0);
+    }
+  };
+
+  const makeHistoryCard = function(boardState) {
+    let { board, state } = boardState
+    let historyCard = $('<div>', {
+      'class': 'history-card',
+    });
+
+    let outcome = $('<p>', {'text': 'Tie'})
+    let boardElement = makeBoard(board);
+
+    if (state === 'end') {
+      let winningSigns = gameController.getWinning(board);
+      highlightWin(boardElement, winningSigns);
+      outcome.text(`${winningSigns[0].sign} wins`);
+    }
+
+    historyCard.append(outcome);
+    historyCard.append(boardElement);
+
+    return historyCard;
+  };
+
+  const displayHistory = function() {
+    clearHistoryList();
+    let historyCards = appStorage.getHistory().map(boardState => makeHistoryCard(boardState));
+    for (let historyCard of historyCards) {
+      historyList.prepend(historyCard);
+    }
+  };
   
   const init = function() {
     historyOverlay.hide();
     historyButton.click(function() {
+      displayHistory();
       historyOverlay.fadeIn(400);
     });
     historyOverlay.click(function(e) {
@@ -203,7 +274,7 @@ const gameController = (function() {
     return signs.length === 3 && signs[0].sign === signs[1].sign && signs[1].sign === signs[2].sign;
   };
 
-  const getWinningSigns = function() {
+  const getWinning = function(board) {
     // Check for 3 same sign in a row
     outer:
     for (let row = 0; row < 3; row++) {
@@ -258,6 +329,10 @@ const gameController = (function() {
     if (isWinning(signs)) return signs;
 
     return null;
+  }
+
+  const getWinningSigns = function() {
+    return getWinning(board);
   };
 
   const winState = function(winningSigns) {
@@ -333,7 +408,8 @@ const gameController = (function() {
   return {
     start: init,
     tileClicked,
-    defaultPlayer
+    defaultPlayer,
+    getWinning
   };
 })();
 
