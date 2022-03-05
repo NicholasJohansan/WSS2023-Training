@@ -136,7 +136,9 @@
 
     const formatDate = function(date) {
       date = new Date(date);
-      return date.toLocaleString();
+      date = [...date.toLocaleString()];
+      date.splice(-3, 3);
+      return date.join('');
     };
 
     const clearTodos = function() {
@@ -174,6 +176,11 @@
         wrapper.find('.delete').click(function() {
           todoManager.deleteTodo(i);
           renderTodos();
+        })
+        wrapper.find('[type=checkbox]').click(function() {
+          let todo = todoManager.getTodos()[i];
+          todo.done = !todo.done;
+          todoManager.updateTodo(i, todo);
         })
         todoListElement.append(wrapper);
       }
