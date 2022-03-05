@@ -29,6 +29,11 @@
       updateTodos();
     };
 
+    const updateTodo = function(index, todoObject) {
+      originalTodos[index] = {...todoObject};
+      updateTodos();
+    }
+
     const getTodos = () => todos;
 
     // Make some placeholder todos
@@ -43,7 +48,7 @@
       updateTodos();
     })();
 
-    return { getTodos, deleteTodo, addTodo };
+    return { getTodos, deleteTodo, addTodo, updateTodo };
   })();
 
   const modalFormHandler = (function() {
@@ -70,23 +75,44 @@
     };
 
     const closeModalOverlay = function() {
+      clearInputs();
+      modalForm.off('submit');
       modalOverlay.fadeOut(300);
     };
 
     const openAddTodo = function() {
+      clearInputs();
       formButton.text('Add');
       formHeading.text('Add Todo');
       modalForm.on('submit', function(e) {
         e.preventDefault();
         todoManager.addTodo(inputs.task.val(), inputs.date.val(), inputs.category.val());
         todoRenderer.renderTodos();
-        clearInputs();
         closeModalOverlay();
-        modalForm.off('submit');
+      });
+    };
+
+    const openEditTodo = function(todo_index) {
+      clearInputs();
+      formButton.text('Edit');
+      formHeading.text('Edit Todo');
+      let todo = todoManager.getTodos()[todo_index]
+      inputs.category.val(todo.category);
+      inputs.task.val(todo.task);
+      inputs.date.val(todo.date);
+      modalForm.on('submit', function(e) {
+        e.preventDefault();
+        todo.category = inputs.category.val();
+        todo.task = inputs.task.val();
+        todo.date = inputs.date.val();
+        todoManager.updateTodo(todo_index, todo);
+        todoRenderer.renderTodos();
+        closeModalOverlay();
       });
     };
 
     const showAddTodo = () => showModalOverlay(openAddTodo);
+    const showEditTodo = (todo_index) => showModalOverlay(() => openEditTodo(todo_index));
 
     // close modalOverlay when clicked
     (function() {
@@ -98,7 +124,7 @@
       });
     })();
 
-    return { showAddTodo };
+    return { showAddTodo, showEditTodo };
   })();
 
   const todoRenderer = (function() {
@@ -142,7 +168,9 @@
           <button class="delete">x</button>
         </div>
         `);
-        // wrapper.find('.edit')
+        wrapper.find('.edit').click(function() {
+          modalFormHandler.showEditTodo(i);
+        });
         wrapper.find('.delete').click(function() {
           todoManager.deleteTodo(i);
           renderTodos();
