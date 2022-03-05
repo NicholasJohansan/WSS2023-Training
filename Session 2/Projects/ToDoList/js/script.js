@@ -26,7 +26,7 @@
       }
     })();
 
-    return {getTodos};
+    return { getTodos };
   })();
 
   const todoRenderer = (function() {
@@ -34,6 +34,11 @@
 
     const escapeHTML = function(text) {
       return $('<div>').text(text).text();
+    };
+
+    const formatDate = function(date) {
+      date = new Date(date);
+      return date.toLocaleString();
     };
 
     const renderTodos = function() {
@@ -44,7 +49,7 @@
           'for': `todo-${i}`,
           'class': 'todo'
         });
-        let dateElement = todo.date ? `<p class="date">${escapeHTML(todo.date)}</p>` : '';
+        let dateElement = todo.date ? `<p class="date">${escapeHTML(formatDate(todo.date))}</p>` : '';
         let categoryElement = todo.category ? `<p class="category">${escapeHTML(todo.category)}</p>` : '';
         wrapper.html(`
         <div class="left-section">
@@ -64,8 +69,10 @@
       }
     };
 
-    (function() {
-      renderTodos();
-    })();
+    return { renderTodos };
+  })();
+
+  (function() {
+    todoRenderer.renderTodos();
   })();
 })();
