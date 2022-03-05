@@ -17,7 +17,11 @@
 
     const addTodo = function(task, date, category) {
       todos.push(makeTodo(task, date, category, false));
-    }
+    };
+
+    const deleteTodo = function(index) {
+      todos.splice(index, 1);
+    };
 
     const getTodos = () => todos;
 
@@ -33,7 +37,7 @@
       }
     })();
 
-    return { getTodos };
+    return { getTodos, deleteTodo };
   })();
 
   const todoRenderer = (function() {
@@ -48,7 +52,12 @@
       return date.toLocaleString();
     };
 
+    const clearTodos = function() {
+      todoListElement.html('');
+    };
+
     const renderTodos = function() {
+      clearTodos();
       let todos = todoManager.getTodos();
       console.log(todos);
       for (let i = 0; i < todos.length; i++) {
@@ -73,6 +82,11 @@
           <button class="delete">x</button>
         </div>
         `);
+        // wrapper.find('.edit')
+        wrapper.find('.delete').click(function() {
+          todoManager.deleteTodo(i);
+          renderTodos();
+        })
         todoListElement.append(wrapper);
       }
     };
