@@ -18,16 +18,34 @@
   const todoManager = (function() {
     let todos = [];
 
+    const generateId = function() {
+      return Math.floor(Math.random()*100000);
+    };
+
     const makeTodo = function(task, date, category, done) {
+      let id;
+      do {
+        id = generateId();
+        console.log('s')
+      } while (todos.filter(todo => todo.id === id).length !== 0);
       task = task || 'task';
       date = date || null;
       category = category || null;
       return {
+        id,
         task,
         date,
         category,
         done
-      }
+      };
+    };
+
+    const getIndex = function(id) {
+      return todos.indexOf(getTodo(id));
+    };
+
+    const getTodo = function(id) {
+      return todos.filter(todo => todo.id === id)[0] || null;
     };
 
     const updateTodos = function() {
@@ -39,13 +57,13 @@
       updateTodos();
     };
 
-    const deleteTodo = function(index) {
-      todos.splice(index, 1);
+    const deleteTodo = function(id) {
+      todos.splice(getIndex(id), 1);
       updateTodos();
     };
 
-    const updateTodo = function(index, todoObject) {
-      todos[index] = {...todoObject};
+    const updateTodo = function(id, todoObject) {
+      todos[getIndex(id)] = {...todoObject};
       updateTodos();
     }
 
@@ -53,9 +71,10 @@
 
     (function() {
       todos = todoStorage.getTodos();
+      console.log(todos);
     })();
 
-    return { getTodos, deleteTodo, addTodo, updateTodo };
+    return { getTodo, getTodos, deleteTodo, addTodo, updateTodo };
   })();
 
   const modalFormHandler = (function() {
@@ -99,11 +118,11 @@
       });
     };
 
-    const openEditTodo = function(todo_index) {
+    const openEditTodo = function(todo_id) {
       clearInputs();
       formButton.text('Edit');
       formHeading.text('Edit Todo');
-      let todo = todoManager.getTodos()[todo_index]
+      let todo = todoManager.getTodo(todo_id);
       inputs.category.val(todo.category);
       inputs.task.val(todo.task);
       inputs.date.val(todo.date);
@@ -112,14 +131,14 @@
         todo.category = inputs.category.val();
         todo.task = inputs.task.val();
         todo.date = inputs.date.val();
-        todoManager.updateTodo(todo_index, todo);
+        todoManager.updateTodo(todo_id, todo);
         todoRenderer.renderTodos();
         closeModalOverlay();
       });
     };
 
     const showAddTodo = () => showModalOverlay(openAddTodo);
-    const showEditTodo = (todo_index) => showModalOverlay(() => openEditTodo(todo_index));
+    const showEditTodo = (todo_id) => showModalOverlay(() => openEditTodo(todo_id));
 
     // close modalOverlay when clicked
     (function() {
@@ -155,17 +174,17 @@
     const renderTodos = function() {
       clearTodos();
       let todos = todoManager.getTodos();
-      for (let i = 0; i < todos.length; i++) {
-        let todo = todos[i];
+      for (let todo of todos) {
+        let id = todo.id;
         let wrapper = $('<label>', {
-          'for': `todo-${i}`,
+          'for': `todo-${id}`,
           'class': 'todo'
         });
         let dateElement = todo.date ? `<p class="date">${escapeHTML(formatDate(todo.date))}</p>` : '';
         let categoryElement = todo.category ? `<p class="category">${escapeHTML(todo.category)}</p>` : '';
         wrapper.html(`
         <div class="left-section">
-          <input type="checkbox" id="todo-${i}" ${todo.done ? 'checked' : ''}>
+          <input type="checkbox" id="todo-${id}" ${todo.done ? 'checked' : ''}>
           <div class="info">
             ${categoryElement}
             <p class="task">${escapeHTML(todo.task)}</p>
@@ -178,16 +197,16 @@
         </div>
         `);
         wrapper.find('.edit').click(function() {
-          modalFormHandler.showEditTodo(i);
+          modalFormHandler.showEditTodo(id);
         });
         wrapper.find('.delete').click(function() {
-          todoManager.deleteTodo(i);
+          todoManager.deleteTodo(id);
           renderTodos();
         })
         wrapper.find('[type=checkbox]').click(function() {
-          let todo = todoManager.getTodos()[i];
+          let todo = todoManager.getTodo(id);
           todo.done = !todo.done;
-          todoManager.updateTodo(i, todo);
+          todoManager.updateTodo(id, todo);
         })
         todoListElement.append(wrapper);
       }
