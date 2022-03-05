@@ -3,16 +3,21 @@
   const todoManager = (function() {
     let todos = [];
 
-    const makeTodo = function(task, date, category) {
+    const makeTodo = function(task, date, category, done) {
       task = task || 'task';
       date = date || null;
       category = category || null;
       return {
         task,
         date,
-        category
+        category,
+        done
       }
     };
+
+    const addTodo = function(task, date, category) {
+      todos.push(makeTodo(task, date, category, false));
+    }
 
     const getTodos = () => todos;
 
@@ -21,7 +26,9 @@
       for (let i = 0; i < 10; i++) {
         let date = Math.random() > 0.5 ? (new Date()).toISOString() : null;
         let category = Math.random() > 0.5 ? 'Some category' : null;
-        let todo = makeTodo(`Task ${i}`, date, category);
+        let done = Math.random() > 0.5;
+        console.log(done);
+        let todo = makeTodo(`Task ${i}`, date, category, done);
         todos.push(todo)
       }
     })();
@@ -43,6 +50,7 @@
 
     const renderTodos = function() {
       let todos = todoManager.getTodos();
+      console.log(todos);
       for (let i = 0; i < todos.length; i++) {
         let todo = todos[i];
         let wrapper = $('<label>', {
@@ -53,7 +61,7 @@
         let categoryElement = todo.category ? `<p class="category">${escapeHTML(todo.category)}</p>` : '';
         wrapper.html(`
         <div class="left-section">
-          <input type="checkbox" id="todo-${i}">
+          <input type="checkbox" id="todo-${i}" ${todo.done ? 'checked' : ''}>
           <div class="info">
             ${categoryElement}
             <p class="task">${escapeHTML(todo.task)}</p>
