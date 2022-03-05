@@ -2,7 +2,7 @@ html, body {
   min-height: fit-content;
   height: 100%;
   width: 100%;
-  padding: 1rem;
+  padding: 0;
   margin: 0;
   display: flex;
   align-items: start;
@@ -11,6 +11,7 @@ html, body {
 }
 
 main {
+  margin: 1rem;
   padding: 1rem;
   /* background-color: #f0f0f0; */
   border-radius: 1rem;
@@ -191,6 +192,69 @@ main {
   border-bottom: 0.2rem solid green;
   border-left: 0.2rem solid green;
   transform: rotate(-45deg);
+}
+
+/* Modal Styles */
+#modal-overlay {
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#modal-form {
+  padding: 1rem;
+  border-radius: 1rem;
+  background-color: #fff;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.2);
+}
+
+#modal-form h2 {
+  margin-top: 0;
+}
+
+#modal-form form label {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+#modal-form form label + label {
+  margin-top: 0.5rem;
+}
+
+#modal-form form label input {
+  width: 12.5rem;
+}
+
+#modal-form form button {
+  margin-top: 0.5rem;
+}
+
+#modal-form form button {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  background-color: #fff;
+}
+
+#modal-form form button {
+  background-color: rgb(62, 114, 255);
+}
+
+#modal-form form button:hover {
+  background-color: rgb(51, 94, 212);
+}
+
+#modal-form form button:active {
+  background-color: rgb(62, 114, 255);
 }
 
 @media screen and (max-width: 700px) {

@@ -1,7 +1,7 @@
 (function() {
 
   const todoManager = (function() {
-    let todos = [];
+    let originalTodos = [];
 
     const makeTodo = function(task, date, category, done) {
       task = task || 'task';
@@ -15,12 +15,18 @@
       }
     };
 
+    const updateTodos = function() {
+      todos = originalTodos;
+    };
+
     const addTodo = function(task, date, category) {
-      todos.push(makeTodo(task, date, category, false));
+      originalTodos.unshift(makeTodo(task, date, category, false));
+      updateTodos();
     };
 
     const deleteTodo = function(index) {
-      todos.splice(index, 1);
+      originalTodos.splice(index, 1);
+      updateTodos();
     };
 
     const getTodos = () => todos;
@@ -31,13 +37,68 @@
         let date = Math.random() > 0.5 ? (new Date()).toISOString() : null;
         let category = Math.random() > 0.5 ? 'Some category' : null;
         let done = Math.random() > 0.5;
-        console.log(done);
         let todo = makeTodo(`Task ${i}`, date, category, done);
-        todos.push(todo)
+        originalTodos.push(todo)
       }
+      updateTodos();
     })();
 
-    return { getTodos, deleteTodo };
+    return { getTodos, deleteTodo, addTodo };
+  })();
+
+  const modalFormHandler = (function() {
+    let modalOverlay = $('#modal-overlay');
+    let modalFormDiv = $('#modal-form');
+    let modalForm = modalFormDiv.find('form');
+    let formHeading = modalFormDiv.find('h2');
+    let formButton = modalFormDiv.find('button');
+
+    let inputs = {
+      task: modalForm.find('#todo-task'),
+      category: modalForm.find('#todo-category'),
+      date: modalForm.find('#todo-date')
+    };
+
+    const clearInputs = function() {
+      Object.values(inputs).forEach(input => input.val(''));
+    };
+
+    const showModalOverlay = function(openForm) {
+      modalOverlay.fadeIn(300, function() {
+        openForm();
+      });
+    };
+
+    const closeModalOverlay = function() {
+      modalOverlay.fadeOut(300);
+    };
+
+    const openAddTodo = function() {
+      formButton.text('Add');
+      formHeading.text('Add Todo');
+      modalForm.on('submit', function(e) {
+        e.preventDefault();
+        todoManager.addTodo(inputs.task.val(), inputs.date.val(), inputs.category.val());
+        todoRenderer.renderTodos();
+        clearInputs();
+        closeModalOverlay();
+        modalForm.off('submit');
+      });
+    };
+
+    const showAddTodo = () => showModalOverlay(openAddTodo);
+
+    // close modalOverlay when clicked
+    (function() {
+      closeModalOverlay();
+      modalOverlay.click(function(e) {
+        if (e.target === modalOverlay.get(0)) {
+          closeModalOverlay();
+        }
+      });
+    })();
+
+    return { showAddTodo };
   })();
 
   const todoRenderer = (function() {
@@ -59,7 +120,6 @@
     const renderTodos = function() {
       clearTodos();
       let todos = todoManager.getTodos();
-      console.log(todos);
       for (let i = 0; i < todos.length; i++) {
         let todo = todos[i];
         let wrapper = $('<label>', {
@@ -95,6 +155,7 @@
   })();
 
   (function() {
+    $('#add-todo').click(modalFormHandler.showAddTodo);
     todoRenderer.renderTodos();
   })();
 })();
