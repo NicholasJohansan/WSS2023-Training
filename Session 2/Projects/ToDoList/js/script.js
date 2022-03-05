@@ -1,7 +1,22 @@
 (function() {
 
+  const todoStorage = (function() {
+    const TODOS_KEY = 'todos';
+
+    const getTodos = function() {
+      let todos = localStorage.getItem(TODOS_KEY) || '[]';
+      return JSON.parse(todos);
+    };
+
+    const setTodos = function(todos) {
+      localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
+    };
+
+    return { getTodos, setTodos };
+  })();
+
   const todoManager = (function() {
-    let originalTodos = [];
+    let todos = [];
 
     const makeTodo = function(task, date, category, done) {
       task = task || 'task';
@@ -16,36 +31,28 @@
     };
 
     const updateTodos = function() {
-      todos = originalTodos;
+      todoStorage.setTodos(todos);
     };
 
     const addTodo = function(task, date, category) {
-      originalTodos.unshift(makeTodo(task, date, category, false));
+      todos.unshift(makeTodo(task, date, category, false));
       updateTodos();
     };
 
     const deleteTodo = function(index) {
-      originalTodos.splice(index, 1);
+      todos.splice(index, 1);
       updateTodos();
     };
 
     const updateTodo = function(index, todoObject) {
-      originalTodos[index] = {...todoObject};
+      todos[index] = {...todoObject};
       updateTodos();
     }
 
     const getTodos = () => todos;
 
-    // Make some placeholder todos
     (function() {
-      for (let i = 0; i < 10; i++) {
-        let date = Math.random() > 0.5 ? (new Date()).toISOString() : null;
-        let category = Math.random() > 0.5 ? 'Some category' : null;
-        let done = Math.random() > 0.5;
-        let todo = makeTodo(`Task ${i}`, date, category, done);
-        originalTodos.push(todo)
-      }
-      updateTodos();
+      todos = todoStorage.getTodos();
     })();
 
     return { getTodos, deleteTodo, addTodo, updateTodo };
