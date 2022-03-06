@@ -2,6 +2,7 @@
 
   const todoStorage = (function() {
     const TODOS_KEY = 'todos';
+    const SORT_TYPE_KEY = 'sortType';
 
     const getTodos = function() {
       let todos = localStorage.getItem(TODOS_KEY) || '[]';
@@ -12,11 +13,21 @@
       localStorage.setItem(TODOS_KEY, JSON.stringify(todos));
     };
 
-    return { getTodos, setTodos };
+    const getSortType = function() {
+      let sortType = localStorage.getItem(SORT_TYPE_KEY) || 'alphabetical';
+      return sortType;
+    };
+
+    const setSortType = function(sortType) {
+      localStorage.setItem(SORT_TYPE_KEY, sortType);
+    };
+
+    return { getTodos, setTodos, getSortType, setSortType };
   })();
 
   const todoManager = (function() {
     let todos = [];
+    let sortType = 'alphabetical';
 
     const generateId = function() {
       return Math.floor(Math.random()*100000);
@@ -48,8 +59,14 @@
       return todos.filter(todo => todo.id === id)[0] || null;
     };
 
+    const sortTodos = function() {
+      // unimplemented
+    };
+
     const updateTodos = function() {
+      sortTodos();
       todoStorage.setTodos(todos);
+      todoStorage.setSortType(sortType);
     };
 
     const addTodo = function(task, date, category) {
@@ -71,7 +88,8 @@
 
     (function() {
       todos = todoStorage.getTodos();
-      console.log(todos);
+      sortType = todoStorage.getSortType();
+      updateTodos();
     })();
 
     return { getTodo, getTodos, deleteTodo, addTodo, updateTodo };
@@ -219,5 +237,10 @@
   (function() {
     $('#add-todo').click(modalFormHandler.showAddTodo);
     todoRenderer.renderTodos();
+    $('#sort-by').change(function() {
+      todoStorage.setSortType($(this).val());
+      todoRenderer.renderTodos();
+    });
+    $('#sort-by').val(todoStorage.getSortType());
   })();
 })();
