@@ -61,6 +61,39 @@
 
     const sortTodos = function() {
       // unimplemented
+      let sortFunction;
+      switch (sortType) {
+        case 'alphabetical':
+          sortFunction = (todo1, todo2) => {
+            if (todo1.task < todo2.task) {
+              return -1;
+            } else {
+              return 1;
+            }
+          };
+          break;
+        case 'category':
+          sortFunction = (todo1, todo2) => {
+            if (todo1.category === null) return 1;
+            if (todo2.category === null) return -1;
+            if (todo1.category < todo2.category) {
+              return -1;
+            } else {
+              return 1;
+            }
+          };
+          break;
+        case 'deadline':
+          sortFunction = (todo1, todo2) => {
+            if (todo1.date === null) return 1;
+            if (todo2.date === null) return -1;
+            return (new Date(todo1.date)).getTime() - (new Date(todo2.date)).getTime();
+          };
+          break;
+        default:
+          break;
+      }
+      todos.sort(sortFunction);
     };
 
     const updateTodos = function() {
@@ -86,13 +119,18 @@
 
     const getTodos = () => todos;
 
+    const setSortType = (value) => {
+      sortType = value;
+      updateTodos();
+    };
+
     (function() {
       todos = todoStorage.getTodos();
       sortType = todoStorage.getSortType();
       updateTodos();
     })();
 
-    return { getTodo, getTodos, deleteTodo, addTodo, updateTodo };
+    return { getTodo, getTodos, deleteTodo, addTodo, updateTodo, setSortType };
   })();
 
   const modalFormHandler = (function() {
@@ -238,7 +276,7 @@
     $('#add-todo').click(modalFormHandler.showAddTodo);
     todoRenderer.renderTodos();
     $('#sort-by').change(function() {
-      todoStorage.setSortType($(this).val());
+      todoManager.setSortType($(this).val());
       todoRenderer.renderTodos();
     });
     $('#sort-by').val(todoStorage.getSortType());
