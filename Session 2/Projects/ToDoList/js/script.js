@@ -94,20 +94,18 @@
       Object.values(inputs).forEach(input => input.val(''));
     };
 
-    const showModalOverlay = function(openForm) {
-      modalOverlay.fadeIn(300, function() {
-        openForm();
-      });
+    const showModalOverlay = function() {
+      modalOverlay.fadeIn(300);
     };
 
     const closeModalOverlay = function() {
-      clearInputs();
       modalForm.off('submit');
-      modalOverlay.fadeOut(300);
+      modalOverlay.fadeOut(300, function() {
+        clearInputs();
+      });
     };
 
     const openAddTodo = function() {
-      clearInputs();
       formButton.text('Add');
       formHeading.text('Add Todo');
       modalForm.on('submit', function(e) {
@@ -116,10 +114,10 @@
         todoRenderer.renderTodos();
         closeModalOverlay();
       });
+      showModalOverlay();
     };
 
     const openEditTodo = function(todo_id) {
-      clearInputs();
       formButton.text('Edit');
       formHeading.text('Edit Todo');
       let todo = todoManager.getTodo(todo_id);
@@ -135,14 +133,17 @@
         todoRenderer.renderTodos();
         closeModalOverlay();
       });
+      showModalOverlay();
     };
 
-    const showAddTodo = () => showModalOverlay(openAddTodo);
-    const showEditTodo = (todo_id) => showModalOverlay(() => openEditTodo(todo_id));
-
-    // close modalOverlay when clicked
+    const showAddTodo = () => openAddTodo();
+    const showEditTodo = (todo_id) => openEditTodo(todo_id);
+    
     (function() {
-      closeModalOverlay();
+      // set modalOverlay to flex display and hide initially
+      modalOverlay.css('display', 'flex');
+      modalOverlay.hide(0);
+      // close modalOverlay when clicked
       modalOverlay.click(function(e) {
         if (e.target === modalOverlay.get(0)) {
           closeModalOverlay();
