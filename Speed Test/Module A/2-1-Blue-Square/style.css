@@ -1,0 +1,36 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+div {
+  height: 350px;
+  width: 350px;
+  background-color: green;
+  border-radius: 100%;
+  animation: 2s linear 0s infinite alternate animation;
+}
+
+@keyframes animation {
+  from { 
+    height: 350px;
+    width: 350px;
+    background-color: green;
+    border-radius: 100%;
+  }
+  to {
+    height: 100px;
+    width: 100px;
+    border-radius: 0%;
+    background-color: blue;
+  }
+}

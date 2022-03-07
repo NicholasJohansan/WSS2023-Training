@@ -1,0 +1,44 @@
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: lightgray;
+}
+
+div {
+  width: 80vw;
+  height: 80vh;
+  background-color: #fff;
+  position: relative;
+}
+
+p.ribbon {
+  margin: 0;
+  position: absolute;
+  background-color: rgb(0, 153, 255);
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 0.5rem 3rem;
+  clip-path: polygon(23.5% 0%, 76.5% 0%, 102.5% 110%, -2.5% 110%);
+  top: 18px;
+  box-shadow: 0px 5px 0px 0px rgb(0, 114, 190);
+}
+
+p.ribbon.left {
+  transform: rotate(-45deg);
+  left: -42px;
+}
+
+p.ribbon.right {
+  transform: rotate(45deg);
+  right: -42px;
+}
