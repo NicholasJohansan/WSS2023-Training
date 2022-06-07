@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="container">
+    <fieldset>
+      <div class="inputs">
+        <div class="input"><span>Variable A </span><input type="number" id="a-val"></div>
+        <div class="input"><span>Variable B </span><input type="number" id="b-val"></div>
+      </div>
+      <button class="submit" onclick="submitVariables()">Submit</button>
+    </fieldset>
+    <div id="output">
+      <fieldset>
+        <span>Before</span>
+        <textarea name="" id="bef-out" cols="30" rows="4" readonly>
+
+        </textarea>
+      </fieldset>
+      <fieldset>
+        <span>After</span>
+        <textarea name="" id="aft-out" cols="30" rows="4" readonly>
+
+        </textarea>
+      </fieldset>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

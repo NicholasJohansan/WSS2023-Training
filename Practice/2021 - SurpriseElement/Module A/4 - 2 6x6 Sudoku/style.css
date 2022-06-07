@@ -1,0 +1,65 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+}
+
+#board {
+  margin-top: 6rem;
+}
+
+.row {
+  width: 24rem;
+  height: 4rem;
+  display: flex;
+}
+
+.tile {
+  width: 4rem;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+/* Make border consistent */
+.row:nth-child(1) .tile {
+  border-top-width: 2px;
+}
+
+.row:nth-child(6) .tile {
+  border-bottom-width: 2px;
+}
+
+.tile:nth-child(1) {
+  border-left-width: 2px;
+}
+
+.tile:nth-child(6) {
+  border-right-width: 2px;
+}
+
+/* Make box borders */
+.tile:nth-child(3n) {
+  border-right-width: 3px;
+}
+
+.tile:nth-child(1) {
+  border-left-width: 3px;
+}
+
+.row:nth-child(odd) .tile {
+  border-top-width: 3px;
+}
+
+.row:nth-child(6) .tile {
+  border-bottom-width: 3px;
+}

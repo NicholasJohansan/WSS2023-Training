@@ -1,0 +1,108 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+#header {
+  flex-grow: 1;
+  display: flex;
+  gap: 0.2rem;
+}
+
+#site-title {
+  flex-grow: 1;
+  background-color: gold;
+}
+
+#nav {
+  flex-grow: 1;
+  display: flex;
+  gap: 0.2rem;
+}
+
+.nav {
+  flex-grow: 1;
+  background-color: pink;
+}
+
+#main {
+  flex-grow: 6;
+  display: flex;
+  gap: 0.2rem;
+}
+
+#body {
+  flex-grow: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+#post-title {
+  background-color: rgb(127, 185, 221);
+  flex-grow: 1;
+}
+
+#post-details {
+  flex-grow: 5;
+  display: flex;
+  gap: 0.2rem;
+}
+
+#post-meta {
+  background-color: rgb(132, 215, 132);
+  flex-grow: 1;
+}
+
+#post-contents {
+  flex-grow: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+#post-content {
+  flex-grow: 2;
+  background-color: lightgray;
+}
+
+#post-image {
+  flex-grow: 3;
+  background-color: yellow;
+}
+
+#side {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+#sidebar {
+  flex-grow: 1;
+  background-color: rgb(255, 188, 62);
+}
+
+#ads {
+  flex-grow: 1;
+  background-color: darkgreen;
+}
+
+#others {
+  flex-grow: 1;
+  background-color: magenta;
+}
+
+#footer {
+  flex-grow: 1;
+  background-color: rgb(150, 101, 61);
+}

@@ -1,0 +1,68 @@
+html {
+  min-height: 100%;
+}
+
+html,
+body {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#clock {
+  background-color: gainsboro;
+  height: 80vmin;
+  width: 80vmin;
+  border-radius: 50%;
+  position: relative;
+}
+
+#seconds {
+  position: absolute;
+  height: 40vmin;
+  right: 0;
+  left: 0;
+  margin: auto;
+  background-color: goldenrod;
+  width: 10px;
+  animation: 60s rotate linear infinite;
+  transform-origin: bottom center;
+}
+
+#minutes {
+  position: absolute;
+  height: 25vmin;
+  width: 18px;
+  background-color: cornflowerblue;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+}
+
+#hours {
+  position: absolute;
+  height: 13vmin;
+  width: 18px;
+  background-color: darkslategrey;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 50%;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,82 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#input {
+  display: flex;
+  gap: 1rem;
+}
+
+#paginator {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#left,
+#right {
+  position: relative;
+  cursor: pointer;
+}
+
+#left::before,
+#right::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  width: 0px;
+  height: 0px;
+  border-bottom: 6px solid transparent;
+  border-top: 6px solid transparent;
+}
+
+#right::before {
+  border-left: 6px solid gray;
+}
+
+#left::before {
+  border-right: 6px solid gray;
+}
+
+#left,
+#right,
+.page {
+  height: 2rem;
+  width: 2rem;
+}
+
+.page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out;
+  background-color: white;
+  color: gray;
+}
+
+.page.active {
+  background-color: rgb(228, 245, 255);
+  color: black;
+}
+
