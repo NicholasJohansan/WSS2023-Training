@@ -9,7 +9,7 @@ Colours are not accurate to the paper
 Completed 7/6/2022  
 16mins 14s
 
-## 1 - 2: Blur Picture Image
+## 1 - 2: Remove the background
 skipped (havent learnt yet)  
 will return when learnt
 
