@@ -1,3 +1,6 @@
+# Module A
+The time taken to complete each part is listed here
+
 ## 1 1: CSS Ribbons
 Attempted
 Replicated to a certain extent
