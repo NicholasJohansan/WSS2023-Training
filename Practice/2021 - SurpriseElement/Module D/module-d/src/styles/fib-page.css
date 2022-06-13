@@ -1,0 +1,43 @@
+#fib-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: -30%;
+}
+
+#fib-page header {
+  margin-bottom: 2rem;
+  font-weight: bold;
+  display: flex;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+#fib-main {
+  width: 50vw;
+}
+
+#fib-main .qn-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+#fib-main .questions {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+
+#fib-main .questions input {
+  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+  width: 10rem;
+  height: 1.5rem;
+  border: 1px solid #000;
+}
+
+#fib-main .questions input:focus {
+  outline: none;
+}

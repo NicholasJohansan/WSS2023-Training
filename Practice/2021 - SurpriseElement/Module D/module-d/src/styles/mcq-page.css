@@ -1,0 +1,65 @@
+#mcq-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: -30%;
+}
+
+#mcq-page header {
+  margin-bottom: 2rem;
+  font-weight: bold;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+#mcq-main {
+  width: 40vw;
+}
+
+#mcq-main .qn-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+#mcq-main .qn-choices {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2rem;
+}
+
+#mcq-main .qn-choices input {
+  margin-bottom: 1rem;
+}
+
+#mcq-main .qn-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#mcq-main .qn-choices span.hidden {
+  visibility: none;
+}
+
+#mcq-main .qn-choices span.correct,
+#mcq-main .qn-choices span.wrong {
+  visibility: visible;
+}
+
+#mcq-main .qn-choices span.correct::before {
+  content: "Correct";
+}
+
+#mcq-main .qn-choices span.wrong::before {
+  content: "Wrong";
+}
+
+#mcq-main .qn-choices span.wrong::before,
+#mcq-main .qn-choices span.correct::before {
+  margin-left: 0.6rem;
+  padding: 2px 10px;
+  background-color: white;
+  border: 1px solid #000;
+}

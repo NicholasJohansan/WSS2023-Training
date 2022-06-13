@@ -1,0 +1,36 @@
+#main-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: -30%;
+}
+
+#main-menu header {
+  margin-bottom: 5rem;
+  font-weight: bold;
+  font-size: 1.4rem;
+}
+
+#links {
+  display: flex;
+  gap: 1rem;
+}
+
+#links button {
+  width: 200px;
+  height: 130px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #000;
+  color: black;
+  font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+}
+
+#links button:hover {
+  background-color: black;
+  color: white;
+}

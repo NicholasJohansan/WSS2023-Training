@@ -1,0 +1,139 @@
+#dnd-page * {
+  user-select: none;
+}
+
+#dnd-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: -20%;
+}
+
+#dnd-page header {
+  margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+#dnd-main .header {
+  width: 50vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: calc(1rem + 20px);
+}
+
+#dnd-main .header .score {
+  position: absolute;
+  right: 0;
+}
+
+#dnd-main .header .notice.correct::after {
+  content: 'Correct';
+}
+
+#dnd-main .header .notice.wrong::after {
+  content: 'Wrong';
+}
+
+#dnd-main .header .notice.correct::after,
+#dnd-main .header .notice.wrong::after {
+  margin-left: 0.6rem;
+  padding: 2px 10px;
+  background-color: white;
+  border: 1px solid #000;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+#dnd-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#dnd-main .boxes {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+}
+
+#dnd-main .boxes .box-area {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#dnd-main .boxes .box-area .label {
+  display: block;
+  padding: 2px 10px;
+  background-color: white;
+  border: 1px solid #000;
+  text-transform: capitalize;
+}
+
+#dnd-main .boxes .box-area .box {
+  height: 11rem;
+  width: 11rem;
+  border: 1px solid #000;
+  background-color: white;
+  position: relative;
+}
+
+#dnd-main .boxes .box-area .box img {
+  height: 5.5rem;
+  width: 5.5rem;
+  border-radius: 50%;
+  user-select: none;
+  position: absolute;
+}
+
+#dnd-main .boxes .box-area .box .single {
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+#dnd-main .boxes .box-area .box .double:first-child {
+  top: 0.5rem;
+  left: 0.5rem;
+}
+
+#dnd-main .boxes .box-area .box .double:last-child {
+  bottom: 0.5rem;
+  right: 0.5rem;
+}
+
+#dnd-main .boxes .box-area .box.green-border {
+  border-color: green;
+}
+
+#dnd-main .choices img {
+  height: 5rem;
+  width: 5rem;
+  border-radius: 50%;
+  user-select: none;
+}
+
+#dnd-main .choices {
+  display: flex;
+  gap: 1rem;
+  height: 5rem;
+}
+
+#dnd-main .qn-buttons {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
